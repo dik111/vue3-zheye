@@ -2,13 +2,14 @@
   <div class="container">
     <global-header :user="currentUser"></global-header>
 <!--    <column-list :list="list"></column-list>-->
-    <form action="">
+    <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
         <validate-input :rules="emailRules"
                         v-model="emailVal"
                         placeholder="请输入邮箱地址"
                         type="text"
+                        ref="inputRef"
         ></validate-input>
       </div>
       <div class="mb-3">
@@ -17,8 +18,11 @@
           type="password" placeholder="请输入密码"
         ></validate-input>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      <template #submit>
+        <span class="btn btn-danger">Submit</span>
+      </template>
+<!--      <button type="submit" class="btn btn-primary">Submit</button>-->
+    </validate-form>
   </div>
 </template>
 
@@ -28,6 +32,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import ColumnList, { ColumnProps } from '@/components/ColumnList.vue'
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
 import ValidateInput, { RulesProp } from '@/components/ValidateInput.vue'
+import ValidateForm from '@/components/ValidateForm.vue'
 
 const currentUser: UserProps = {
   isLogin: true,
@@ -64,9 +69,11 @@ export default defineComponent({
   components: {
     // ColumnList,
     GlobalHeader,
-    ValidateInput
+    ValidateInput,
+    ValidateForm
   },
   setup () {
+    const inputRef = ref<any>()
     const emailVal = ref('yuwei')
     const emailRules: RulesProp = [
       { type: 'required', message: '电子邮箱地址不能为空' },
@@ -83,13 +90,18 @@ export default defineComponent({
         emailRef.message = ' can not be empty'
       }
     }
+    const onFormSubmit = (result: boolean) => {
+      console.log('result', inputRef.value.validateInput())
+    }
     return {
       list: testData,
       currentUser,
       emailRef,
       validateEmail,
       emailRules,
-      emailVal
+      emailVal,
+      onFormSubmit,
+      inputRef
     }
   }
 })
