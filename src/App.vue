@@ -1,28 +1,18 @@
 <template>
   <div class="container">
     <global-header :user="currentUser"></global-header>
-<!--    <column-list :list="list"></column-list>-->
-    <validate-form @form-submit="onFormSubmit">
-      <div class="mb-3">
-        <label class="form-label">邮箱地址</label>
-        <validate-input :rules="emailRules"
-                        v-model="emailVal"
-                        placeholder="请输入邮箱地址"
-                        type="text"
-                        ref="inputRef"
-        ></validate-input>
-      </div>
-      <div class="mb-3">
-        <label  class="form-label">密码</label>
-        <validate-input
-          type="password" placeholder="请输入密码"
-        ></validate-input>
-      </div>
-      <template #submit>
-        <span class="btn btn-danger">Submit</span>
-      </template>
-<!--      <button type="submit" class="btn btn-primary">Submit</button>-->
-    </validate-form>
+    <router-view></router-view>
+    <footer class="text-center py-4 text-secondary bg-light mt-6">
+      <small>
+        <ul class="list-inline mb-0">
+          <li class="list-inline-item">@ 2020 者也专栏</li>
+          <li class="list-inline-item">课程</li>
+          <li class="list-inline-item">文档</li>
+          <li class="list-inline-item">联系</li>
+          <li class="list-inline-item">更多</li>
+        </ul>
+      </small>
+    </footer>
   </div>
 </template>
 
@@ -33,6 +23,7 @@ import ColumnList, { ColumnProps } from '@/components/ColumnList.vue'
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
 import ValidateInput, { RulesProp } from '@/components/ValidateInput.vue'
 import ValidateForm from '@/components/ValidateForm.vue'
+import ColumnDetail from '@/views/ColumnDetail.vue'
 
 const currentUser: UserProps = {
   isLogin: true,
@@ -68,9 +59,7 @@ export default defineComponent({
   name: 'App',
   components: {
     // ColumnList,
-    GlobalHeader,
-    ValidateInput,
-    ValidateForm
+    GlobalHeader
   },
   setup () {
     const inputRef = ref<any>()
